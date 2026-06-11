@@ -1,58 +1,49 @@
-<!DOCTYPE html>
+<?php
+    include_once '../LayoutExterno.php';
+?>
+
+<!doctype html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8" />
-    <title>Proyecto Web MN</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-    <link rel="stylesheet" href="css/main.css">
-</head>
-</head>
+<?php
+    ImportCSS();
+?>
 
 <body>
     <div class="container d-flex align-items-center justify-content-center min-vh-100">
-        <div class="card " style="max-width:420px; width:100%;">
+        <div class="card" style="max-width: 420px; width: 100%">
             <div class="card-body p-5">
                 <div class="text-center mb-3">
-                    <a href="index.html" class="mb-4 d-inline-block"><img src="images/logo-icon.svg" alt="" width="36">
-                        <span class=" ms-2"> <img src="images/logo.svg" alt=""></span>
+                    <a href="index.html" class="mb-2 d-inline-block"><img src="../images/logo-fidelitas.png" alt=""
+                            width="130" />
                     </a>
                     <h1 class="card-title mb-5 h5">Iniciar Sesión</h1>
-
                 </div>
 
                 <form class="needs-validation mt-3" novalidate>
                     <div class="mb-3">
                         <label for="identificacion" class="form-label">Identificación</label>
-                        <input id="identificacion" type="text" class="form-control" required autofocus>
+                        <input id="identificacion" type="text" class="form-control" required autofocus />
                     </div>
 
                     <div class="mb-3">
-                        <label for="contrasena" class="form-label d-flex justify-content-between">
+                        <label for="contrasenna" class="form-label d-flex justify-content-between">
                             <span>Contraseña</span>
-                            <a href="RecuperarAcceso.html" class="small link-primary">¿Olvidó su contraseña?</a>
+                            <a href="RecuperarAcceso.php" class="small link-primary">¿Olvidó su contraseña?</a>
                         </label>
-                        <input id="contrasena" type="text" class="form-control" requiredminlength="6">
+                        <input id="contrasenna" type="password" class="form-control" required minlength="6" />
                     </div>
 
                     <button class="btn btn-primary w-100" type="submit">Procesar</button>
-                    
                 </form>
 
                 <div class="text-center mt-3 small text-muted">
-                    ¿No tiene una cuenta? <a href="RegistrarUsuarios.html" class="link-primary">Regístrese</a>
+                    ¿No tiene una cuenta?
+                    <a href="RegistrarUsuarios.php" class="link-primary">Regístrese</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="js/sidebar.js"></script>
-
 </body>
-
 </html>

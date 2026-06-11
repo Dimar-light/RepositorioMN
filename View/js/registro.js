@@ -1,15 +1,15 @@
+$(function () {
+
+    $("#nombre").prop("readonly", true);
+    $("#nombre").css("background-color", "#d9dde28d");
+
+});
+
 /*
-document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
+        
+        document.getElementById("nombre").readOnly = true;
+        document.getElementById("nombre").style.backgroundColor = "#d9dde28d";
 
-    document.getElementById("nombreCompleto").readOnly = true;
-    document.getElementById("nombreCompleto").style.backgroundColor = "#6a849e60";
-
-});
+    });
 */
-
-$(function() {
-
-    $("#nombreCompleto").prop("readOnly", true);
-    $("#nombreCompleto").css("backgroundColor", "#6a849e60");
-    
-});
