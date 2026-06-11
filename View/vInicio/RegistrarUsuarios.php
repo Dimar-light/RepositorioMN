@@ -1,13 +1,13 @@
 <?php
-    include_once '../../Controller/InicioController.php';
-    include_once '../LayoutExterno.php';
+include_once '../../Controller/InicioController.php';
+include_once '../LayoutExterno.php';
 ?>
 
 <!doctype html>
 <html lang="en">
 
 <?php
-    ImportCSS();
+ImportCSS();
 ?>
 
 <body>
@@ -34,15 +34,18 @@
 
                     <div class="mb-3">
                         <label for="correoElectronico" class="form-label">Correo Electrónico</label>
-                        <input id="correoElectronico" name="correoElectronico" type="text" class="form-control" required />
+                        <input id="correoElectronico" name="correoElectronico" type="text" class="form-control"
+                            required />
                     </div>
 
                     <div class="mb-3">
                         <label for="contrasenna" class="form-label">Contraseña</label>
-                        <input id="contrasenna" name="contrasenna" type="password" class="form-control" required minlength="6" />
+                        <input id="contrasenna" name="contrasenna" type="password" class="form-control" required
+                            minlength="6" />
                     </div>
 
-                    <button id="btnRegistrar" name="btnRegistrar" type="submit" class="btn btn-primary w-100">Procesar</button>
+                    <button id="btnRegistrar" name="btnRegistrar" type="submit"
+                        class="btn btn-primary w-100">Procesar</button>
                 </form>
 
                 <div class="text-center mt-3 small text-muted">
@@ -54,7 +57,7 @@
     </div>
 
     <?php
-        ImportJS();
+    ImportJS();
     ?>
     <script src="../js/registro.js"></script>
 </body>

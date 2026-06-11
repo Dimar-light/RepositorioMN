@@ -1,6 +1,5 @@
 <?php
 
-if(isset($_POST["btnRegistrar"]))
-{
+if (isset($_POST["btnRegistrar"])) {
     echo $_POST["identificacion"];
 }

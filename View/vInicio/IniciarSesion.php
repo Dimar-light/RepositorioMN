@@ -1,12 +1,12 @@
 <?php
-    include_once '../LayoutExterno.php';
+include_once '../LayoutExterno.php';
 ?>
 
 <!doctype html>
 <html lang="en">
 
 <?php
-    ImportCSS();
+ImportCSS();
 ?>
 
 <body>
@@ -46,4 +46,5 @@
     </div>
 
 </body>
+
 </html>
