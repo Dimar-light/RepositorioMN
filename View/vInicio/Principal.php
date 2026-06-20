@@ -1,19 +1,19 @@
 <?php
-include_once '../LayoutInterno.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/RepositorioMN/View/LayoutInterno.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <?php
-ImportCSS();
+    ImportCSS();
 ?>
 
 <body>
-
+    
     <?php
-    Navbar();
-    Sidebar();
+        Navbar();
+        Sidebar();
     ?>
 
     <main id="content" class="content py-10">
@@ -29,14 +29,14 @@ ImportCSS();
             </div>
 
             <?php
-            Footer();
+                Footer();
             ?>
 
         </div>
     </main>
 
     <?php
-    ImportJS();
+        ImportJS();
     ?>
 
 </body>

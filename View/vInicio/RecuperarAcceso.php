@@ -1,12 +1,12 @@
 <?php
-include_once '../LayoutExterno.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/RepositorioMN/View/LayoutExterno.php';
 ?>
 
 <!doctype html>
 <html lang="en">
 
 <?php
-ImportCSS();
+    ImportCSS();
 ?>
 
 <body>
@@ -14,7 +14,7 @@ ImportCSS();
         <div class="card" style="max-width: 420px; width: 100%">
             <div class="card-body p-5">
                 <div class="text-center mb-3">
-                    <a href="index.html" class="mb-2 d-inline-block"><img src="../images/logo-fidelitas.png" alt=""
+                   <a href="index.html" class="mb-2 d-inline-block"><img src="../images/logo-fidelitas.png" alt=""
                             width="130" />
                     </a>
                     <h1 class="card-title mb-5 h5">Recuperar Acceso</h1>
@@ -38,5 +38,4 @@ ImportCSS();
     </div>
 
 </body>
-
 </html>

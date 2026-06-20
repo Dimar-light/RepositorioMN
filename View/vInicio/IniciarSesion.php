@@ -1,12 +1,13 @@
 <?php
-include_once '../LayoutExterno.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/RepositorioMN/Controller/InicioController.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/RepositorioMN/View/LayoutExterno.php';
 ?>
 
 <!doctype html>
 <html lang="en">
 
 <?php
-ImportCSS();
+    ImportCSS();
 ?>
 
 <body>
@@ -17,13 +18,22 @@ ImportCSS();
                     <a href="index.html" class="mb-2 d-inline-block"><img src="../images/logo-fidelitas.png" alt=""
                             width="130" />
                     </a>
-                    <h1 class="card-title mb-5 h5">Iniciar Sesión</h1>
+                    <h1 class="card-title mb-3 h5">Iniciar Sesión</h1>
                 </div>
 
-                <form class="needs-validation mt-3" novalidate>
+                <?php
+                    if(isset($_POST["Mensaje"]))
+                    {
+                        echo '<div class="alert alert-danger text-center">' 
+                             . $_POST["Mensaje"] . '</div>';
+                    }
+                ?>
+
+                <form action="" method="post" class="needs-validation mt-3" id="formIniciarSesion">
+
                     <div class="mb-3">
                         <label for="identificacion" class="form-label">Identificación</label>
-                        <input id="identificacion" type="text" class="form-control" required autofocus />
+                        <input id="identificacion" name="identificacion" type="text" class="form-control" autofocus />
                     </div>
 
                     <div class="mb-3">
@@ -31,10 +41,10 @@ ImportCSS();
                             <span>Contraseña</span>
                             <a href="RecuperarAcceso.php" class="small link-primary">¿Olvidó su contraseña?</a>
                         </label>
-                        <input id="contrasenna" type="password" class="form-control" required minlength="6" />
+                        <input id="contrasenna" name="contrasenna" type="password" class="form-control" />
                     </div>
 
-                    <button class="btn btn-primary w-100" type="submit">Procesar</button>
+                    <button type="submit" id="btnIniciarSesion" name="btnIniciarSesion" class="btn btn-primary w-100">Procesar</button>
                 </form>
 
                 <div class="text-center mt-3 small text-muted">
@@ -45,6 +55,10 @@ ImportCSS();
         </div>
     </div>
 
-</body>
+    <?php
+        ImportJS();
+    ?>
+    <script src="../js/iniciarSesion.js"></script>
 
+</body>
 </html>

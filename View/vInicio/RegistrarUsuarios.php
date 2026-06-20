@@ -1,13 +1,13 @@
 <?php
-include_once '../../Controller/InicioController.php';
-include_once '../LayoutExterno.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/RepositorioMN/Controller/InicioController.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/RepositorioMN/View/LayoutExterno.php';
 ?>
 
 <!doctype html>
 <html lang="en">
 
 <?php
-ImportCSS();
+    ImportCSS();
 ?>
 
 <body>
@@ -18,34 +18,41 @@ ImportCSS();
                     <a href="index.html" class="mb-2 d-inline-block"><img src="../images/logo-fidelitas.png" alt=""
                             width="130" />
                     </a>
-                    <h1 class="card-title mb-5 h5">Registrar Usuarios</h1>
+                    <h1 class="card-title mb-3 h5">Registrar Usuarios</h1>
                 </div>
 
-                <form action="" method="post" class="needs-validation mt-3" novalidate>
+                <?php
+                    if(isset($_POST["Mensaje"]))
+                    {
+                        echo '<div class="alert alert-danger text-center">' 
+                             . $_POST["Mensaje"] . '</div>';
+                    }
+                ?>
+
+                <form action="" method="post" class="needs-validation mt-3" id="formRegistrarUsuarios">
+
                     <div class="mb-3">
                         <label for="identificacion" class="form-label">Identificación</label>
-                        <input id="identificacion" name="identificacion" type="text" class="form-control" required />
+                        <input id="identificacion" name="identificacion" type="text" class="form-control" 
+                        onkeyup="ConsultarNombreAPI();" />
                     </div>
 
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre</label>
-                        <input id="nombre" name="nombre" type="text" class="form-control" required />
+                        <input id="nombre" name="nombre" type="text" class="form-control" />
                     </div>
 
                     <div class="mb-3">
                         <label for="correoElectronico" class="form-label">Correo Electrónico</label>
-                        <input id="correoElectronico" name="correoElectronico" type="text" class="form-control"
-                            required />
+                        <input id="correoElectronico" name="correoElectronico" type="text" class="form-control" />
                     </div>
 
                     <div class="mb-3">
                         <label for="contrasenna" class="form-label">Contraseña</label>
-                        <input id="contrasenna" name="contrasenna" type="password" class="form-control" required
-                            minlength="6" />
+                        <input id="contrasenna" name="contrasenna" type="password" class="form-control"/>
                     </div>
 
-                    <button id="btnRegistrar" name="btnRegistrar" type="submit"
-                        class="btn btn-primary w-100">Procesar</button>
+                    <button id="btnRegistrar" name="btnRegistrar" type="submit" class="btn btn-primary w-100">Procesar</button>
                 </form>
 
                 <div class="text-center mt-3 small text-muted">
@@ -57,7 +64,7 @@ ImportCSS();
     </div>
 
     <?php
-    ImportJS();
+        ImportJS();
     ?>
     <script src="../js/registro.js"></script>
 </body>

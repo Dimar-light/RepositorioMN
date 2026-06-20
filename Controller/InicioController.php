@@ -1,5 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/RepoMN/Model/InicioModel.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/RepositorioMN/Model/InicioModel.php';
 
 if (isset($_POST["btnRegistrar"])) {
     $identificacion = $_POST["identificacion"];
@@ -7,7 +7,14 @@ if (isset($_POST["btnRegistrar"])) {
     $correoElectronico = $_POST["correoElectronico"];
     $contrasenna = $_POST["contrasenna"];
 
-    RegistrarUsuarioModel($identificacion, $nombre, $correoElectronico, $contrasenna);
+    $datos = RegistrarUsuarioModel($identificacion, $nombre, $correoElectronico, $contrasenna);
+
+    if ($datos) {
+        header("Location: ../../View/vInicio/IniciarSesion.php");
+        exit();
+    }
+
+    $_POST["Mensaje"] = "No se ha podido registrar su información correctamente";
 }
 
 if (isset($_POST["btnIniciarSesion"])) {
@@ -21,5 +28,5 @@ if (isset($_POST["btnIniciarSesion"])) {
         exit();
     }
 
-    $_POST["Mensaje"] = "NO SE AUTENTICÓ CORRECTAMENTE";
+    $_POST["Mensaje"] = "No se ha podido autenticar su información correctamente";
 }
