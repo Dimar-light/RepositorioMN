@@ -1,32 +1,80 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/RepositorioMN/Model/InicioModel.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/RepositorioMN/Controller/UtilitarioController.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/RepositorioMN/Model/InicioModel.php';
 
-if (isset($_POST["btnRegistrar"])) {
-    $identificacion = $_POST["identificacion"];
-    $nombre = $_POST["nombre"];
-    $correoElectronico = $_POST["correoElectronico"];
-    $contrasenna = $_POST["contrasenna"];
-
-    $datos = RegistrarUsuarioModel($identificacion, $nombre, $correoElectronico, $contrasenna);
-
-    if ($datos) {
-        header("Location: ../../View/vInicio/IniciarSesion.php");
-        exit();
+    if(session_status() == PHP_SESSION_NONE){
+        session_start();
     }
 
-    $_POST["Mensaje"] = "No se ha podido registrar su información correctamente";
-}
+    if(isset($_POST["btnRegistrar"]))
+    {
+        $identificacion = $_POST["identificacion"];
+        $nombre = $_POST["nombre"];
+        $correoElectronico = $_POST["correoElectronico"];
+        $contrasenna = $_POST["contrasenna"];
 
-if (isset($_POST["btnIniciarSesion"])) {
-    $identificacion = $_POST["identificacion"];
-    $contrasenna = $_POST["contrasenna"];
+        $datos = RegistrarUsuarioModel($identificacion,$nombre,$correoElectronico,$contrasenna);
 
-    $datos = IniciarSesionModel($identificacion, $contrasenna);
+        if($datos)
+        {
+            header("Location: ../../View/vInicio/IniciarSesion.php");
+            exit();
+        }
 
-    if ($datos) {
-        header("Location: ../../View/vInicio/Principal.php");
-        exit();
+        $_POST["Mensaje"] = "No se ha podido registrar su información correctamente";
     }
 
-    $_POST["Mensaje"] = "No se ha podido autenticar su información correctamente";
-}
+    if(isset($_POST["btnIniciarSesion"]))        
+    {
+        $identificacion = $_POST["identificacion"];
+        $contrasenna = $_POST["contrasenna"];
+
+        $datos = IniciarSesionModel($identificacion,$contrasenna);
+
+        if($datos)
+        {
+            $_SESSION["NombreUsuario"] = $datos["Nombre"];
+            $_SESSION["ConsecutivoUsuario"] = $datos["Consecutivo"];
+            $_SESSION["CorreoElectronicoUsuario"] = $datos["CorreoElectronico"];
+            $_SESSION["ConsecutivoRol"] = $datos["ConsecutivoRol"];
+            $_SESSION["NombreRol"] = $datos["NombreRol"];
+
+            header("Location: ../../View/vInicio/Principal.php");
+            exit();
+        }
+
+        $_POST["Mensaje"] = "No se ha podido autenticar su información correctamente";
+    }
+
+    if(isset($_POST["btnRecuperarAcceso"]))
+    {
+        $correoElectronico = $_POST["correoElectronico"];
+
+        $datos = ValidarCorreoModel($correoElectronico);
+        
+        if($datos)
+        {
+            $temporal = generarContrasena();            
+            $actualizacion = ActualizarContrasennaModel($datos['Consecutivo'], $temporal);
+
+            if($actualizacion)
+            {
+                $plantilla = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/RepoMN/View/templates/Recuperacion.html');
+                $plantilla = str_replace("{{TEMPORAL}}", $temporal, $plantilla);
+                $plantilla = str_replace("{{NOMBRE}}", $datos['Nombre'], $plantilla);
+
+                EnviarCorreo("Recuperación de acceso", $plantilla, $datos['CorreoElectronico']);
+
+                header("Location: ../../View/vInicio/IniciarSesion.php");
+                exit();
+            }
+        }
+
+        $_POST["Mensaje"] = "No se ha podido recuperar su acceso correctamente";
+    }
+
+    if(isset($_POST["btnSalir"]))        
+    {
+        CerrarSesion();
+    }
+    

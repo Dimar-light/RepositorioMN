@@ -1,24 +1,29 @@
 <?php
 
-function OpenDB()
-{
-    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-    return new mysqli("127.0.0.1:3307", "root", "", "mn");
-}
+    if(session_status() == PHP_SESSION_NONE){
+        session_start();
+    }
 
-function CloseDB($conn)
-{
-    $conn->close();
-}
+    function OpenDB()
+    {
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+        return new mysqli("127.0.0.1:3307", "root", "", "mn");
+    }
 
-function AddError($error, $accion, $idUsuario)
-{
-    $conn = OpenDB();
+    function CloseDB($conn)
+    {
+        $conn -> close();
+    }
 
-    $mensaje = $conn->real_escape_string($error->getMessage());
+    function AddError($error, $accion)
+    {
+        $conn = OpenDB();
 
-    $sql = "CALL spRegistrarError('$mensaje', '$accion', '$idUsuario')";
-    $response = $conn->query($sql);
+        $mensaje = $conn -> real_escape_string($error -> getMessage());
+        $idUsuario = isset($_SESSION["ConsecutivoUsuario"]) ? $_SESSION["ConsecutivoUsuario"] : 0;
 
-    CloseDB($conn);
-}
+        $sql = "CALL spRegistrarError('$mensaje', '$accion', '$idUsuario')";
+        $response = $conn -> query($sql);           
+            
+        CloseDB($conn);
+    }

@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `mn` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `mn`;
--- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.46, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: mn
 -- ------------------------------------------------------
@@ -18,6 +18,118 @@ USE `mn`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `tb_curso`
+--
+
+DROP TABLE IF EXISTS `tb_curso`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_curso` (
+  `Consecutivo` int(11) NOT NULL AUTO_INCREMENT,
+  `Nombre` varchar(100) NOT NULL,
+  `Cantidad` int(11) NOT NULL,
+  `Inicio` datetime NOT NULL,
+  `Fin` datetime NOT NULL,
+  `Activo` bit(1) NOT NULL,
+  `Imagen` varchar(100) NOT NULL,
+  `ConsecutivoUsuario` int(11) NOT NULL,
+  PRIMARY KEY (`Consecutivo`),
+  KEY `fk_curso_usuario` (`ConsecutivoUsuario`),
+  CONSTRAINT `fk_curso_usuario` FOREIGN KEY (`ConsecutivoUsuario`) REFERENCES `tb_usuario` (`Consecutivo`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_curso`
+--
+
+LOCK TABLES `tb_curso` WRITE;
+/*!40000 ALTER TABLE `tb_curso` DISABLE KEYS */;
+INSERT INTO `tb_curso` VALUES (17,'Tutoría de MySQL',2,'2026-08-06 12:00:00','2026-08-06 14:00:00',_binary '','/RepoMN/View/Uploads/17.png',16),(18,'Tutoría de Progra',2,'2026-08-05 20:00:00','2026-08-08 22:00:00',_binary '','/RepoMN/View/Uploads/18.png',16),(19,'Curso de VideoJuegos',4,'2026-08-10 18:00:00','2026-08-10 09:00:00',_binary '','/RepoMN/View/Uploads/19.png',21);
+/*!40000 ALTER TABLE `tb_curso` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tb_error`
+--
+
+DROP TABLE IF EXISTS `tb_error`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_error` (
+  `Consecutivo` int(11) NOT NULL AUTO_INCREMENT,
+  `Mensaje` varchar(8000) NOT NULL,
+  `FechaHora` datetime NOT NULL,
+  `Accion` varchar(100) NOT NULL,
+  `ConsecutivoUsuario` int(11) NOT NULL,
+  PRIMARY KEY (`Consecutivo`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_error`
+--
+
+LOCK TABLES `tb_error` WRITE;
+/*!40000 ALTER TABLE `tb_error` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tb_error` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tb_matricula`
+--
+
+DROP TABLE IF EXISTS `tb_matricula`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_matricula` (
+  `Consecutivo` int(11) NOT NULL AUTO_INCREMENT,
+  `ConsecutivoUsuario` int(11) NOT NULL,
+  `ConsecutivoCurso` int(11) NOT NULL,
+  `FechaMatricula` datetime NOT NULL,
+  PRIMARY KEY (`Consecutivo`),
+  KEY `fk_tb_matricula_curso` (`ConsecutivoCurso`),
+  KEY `fk_tb_matricula_usuario` (`ConsecutivoUsuario`),
+  CONSTRAINT `fk_tb_matricula_curso` FOREIGN KEY (`ConsecutivoCurso`) REFERENCES `tb_curso` (`Consecutivo`),
+  CONSTRAINT `fk_tb_matricula_usuario` FOREIGN KEY (`ConsecutivoUsuario`) REFERENCES `tb_usuario` (`Consecutivo`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_matricula`
+--
+
+LOCK TABLES `tb_matricula` WRITE;
+/*!40000 ALTER TABLE `tb_matricula` DISABLE KEYS */;
+INSERT INTO `tb_matricula` VALUES (1,20,19,'2026-08-06 20:41:00');
+/*!40000 ALTER TABLE `tb_matricula` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tb_rol`
+--
+
+DROP TABLE IF EXISTS `tb_rol`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_rol` (
+  `Consecutivo` int(11) NOT NULL AUTO_INCREMENT,
+  `Nombre` varchar(50) NOT NULL,
+  PRIMARY KEY (`Consecutivo`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_rol`
+--
+
+LOCK TABLES `tb_rol` WRITE;
+/*!40000 ALTER TABLE `tb_rol` DISABLE KEYS */;
+INSERT INTO `tb_rol` VALUES (1,'Profesor'),(2,'Estudiante');
+/*!40000 ALTER TABLE `tb_rol` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tb_usuario`
 --
 
@@ -31,10 +143,13 @@ CREATE TABLE `tb_usuario` (
   `CorreoElectronico` varchar(100) NOT NULL,
   `Contrasenna` varchar(10) NOT NULL,
   `Estado` bit(1) NOT NULL,
+  `ConsecutivoRol` int(11) NOT NULL,
   PRIMARY KEY (`Consecutivo`),
-  UNIQUE KEY `Identificacion` (`Identificacion`),
-  UNIQUE KEY `UK_CorreoElectronico` (`CorreoElectronico`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  UNIQUE KEY `UK_Identificacion` (`Identificacion`),
+  UNIQUE KEY `UK_CorreoElectronico` (`CorreoElectronico`),
+  KEY `FK_Usuario_Rol` (`ConsecutivoRol`),
+  CONSTRAINT `FK_Usuario_Rol` FOREIGN KEY (`ConsecutivoRol`) REFERENCES `tb_rol` (`Consecutivo`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,14 +158,14 @@ CREATE TABLE `tb_usuario` (
 
 LOCK TABLES `tb_usuario` WRITE;
 /*!40000 ALTER TABLE `tb_usuario` DISABLE KEYS */;
-INSERT INTO `tb_usuario` VALUES (1,'801590382','ARCE CHAVEZ MARGELINE ANDREA','cmargeline90382@ufide.ac.cr','90382',_binary ''),(2,'155812179228','CHAVEZ UMANA MARYINA AURORA','chavezmaryina@gmail.com','12345',_binary '');
+INSERT INTO `tb_usuario` VALUES (16,'304590415','EDUARDO JOSE CALVO CASTILLO','ecalvo90415@ufide.ac.cr','12345',_binary '',1),(20,'118780222','JUAN JOSE SALAS AMADOR','jsalas80222@ufide.ac.cr','12345',_binary '',2),(21,'207480733','JOSETH STEVEN CESPEDES MOYA','jcespedes80733@ufide.ac.cr','12345',_binary '',1);
 /*!40000 ALTER TABLE `tb_usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'mn'
 --
-/*!50003 DROP PROCEDURE IF EXISTS `spIniciarSesion` */;
+/*!50003 DROP PROCEDURE IF EXISTS `spActualizarContrasenna` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -60,8 +175,257 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spIniciarSesion`()
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarContrasenna`(
+	pConsecutivo 	int, 
+    pContrasenna	varchar(10)
+)
 BEGIN
+
+	UPDATE 	tb_usuario
+	SET		Contrasenna = pContrasenna
+	WHERE 	Consecutivo = pConsecutivo;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spActualizarCurso` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCurso`(
+	pNombre 		varchar(100), 
+    pCantidad		int,
+    pFechaInicio	datetime,
+    pFechaFin		datetime,
+    pConsecutivo	int
+)
+BEGIN
+
+	UPDATE 	tb_curso
+	SET		Nombre = pNombre,
+			Cantidad = pCantidad,
+            Inicio = pFechaInicio,
+            Fin = pFechaFin
+	WHERE 	Consecutivo = pConsecutivo;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spActualizarImagenCurso` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarImagenCurso`(
+	pConsecutivo 	int, 
+    pImagen			varchar(100)
+)
+BEGIN
+
+	UPDATE 	tb_curso
+	SET		Imagen = pImagen
+	WHERE 	Consecutivo = pConsecutivo;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spActualizarPerfil` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarPerfil`(
+	pConsecutivo 	int, 
+    pIdentificacion	varchar(15),
+    pNombre			varchar(250),
+    pCorreoElectronico varchar(100)
+)
+BEGIN
+
+	UPDATE 	tb_usuario
+	SET		Identificacion = pIdentificacion,
+			Nombre = pNombre,
+            CorreoElectronico = pCorreoElectronico
+	WHERE 	Consecutivo = pConsecutivo;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spConsultarCurso` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCurso`(
+	pConsecutivo	int
+)
+BEGIN
+
+	SELECT 	Consecutivo,
+			Nombre,
+			Cantidad,
+			Inicio,
+			Fin,
+			CASE WHEN Activo = 1 THEN 'Activo' ELSE 'Inactivo' END Activo,
+            Imagen
+	FROM 	tb_curso C
+    WHERE	Consecutivo = pConsecutivo;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spConsultarCursosDisponibles` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCursosDisponibles`(
+    pConsecutivoEstudiante INT
+)
+BEGIN
+    SELECT  C.Consecutivo,
+            C.Nombre,
+            Cantidad,
+            Inicio,
+            Fin,
+            CASE WHEN C.Activo = 1 THEN 'Activo' ELSE 'Inactivo' END Activo,
+            Imagen,
+            U.Nombre 'NombreProfesor'
+    FROM    tb_curso C
+    INNER JOIN tb_usuario U  ON C.ConsecutivoUsuario = U.Consecutivo
+    LEFT  JOIN tb_matricula M ON C.Consecutivo = M.ConsecutivoCurso
+                              AND M.ConsecutivoUsuario = pConsecutivoEstudiante
+    WHERE   C.Activo = 1
+        AND C.Inicio >= NOW()
+        AND M.ConsecutivoCurso IS NULL;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spConsultarCursosProfesor` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCursosProfesor`(
+	pConsecutivo	int
+)
+BEGIN
+
+	SELECT 	Consecutivo,
+			Nombre,
+			Cantidad,
+			Inicio,
+			Fin,
+			CASE WHEN Activo = 1 THEN 'Activo' ELSE 'Inactivo' END Activo,
+            Imagen
+	FROM 	tb_curso C
+    WHERE	ConsecutivoUsuario = pConsecutivo;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spConsultarUsuario` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarUsuario`(
+	pConsecutivo	int
+)
+BEGIN
+
+	SELECT 	U.Consecutivo,
+			Identificacion,
+			U.Nombre,
+			CorreoElectronico,
+			Estado,
+            ConsecutivoRol,
+            R.Nombre 'NombreRol'
+	FROM 	tb_usuario U
+    INNER JOIN tb_rol R ON U.ConsecutivoRol = R.Consecutivo
+    WHERE	U.Consecutivo = pConsecutivo;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spInactivarCurso` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spInactivarCurso`(
+    pConsecutivo	int
+)
+BEGIN
+
+	UPDATE 	tb_curso
+	SET		Activo = 0
+	WHERE 	Consecutivo = pConsecutivo;
 
 END ;;
 DELIMITER ;
@@ -80,19 +444,82 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIniciarSesionUsuario`(
-pIdentificacion varchar(15), 
-pContrasenna varchar(10)
+	pIdentificacionCorreo 	varchar(100), 
+    pContrasenna			varchar(10)
 )
 BEGIN
-	SELECT Consecutivo,
-		Identificacion,
-		Nombre,
-		CorreoElectronico,
-		Estado
-	FROM tb_usuario
-    WHERE Identificacion = pIdentificacion
-	AND Contrasenna = pContrasenna
-	AND Estado =1;
+
+	SELECT 	U.Consecutivo,
+			Identificacion,
+			U.Nombre,
+			CorreoElectronico,
+			Estado,
+            ConsecutivoRol,
+            R.Nombre 'NombreRol'
+	FROM 	tb_usuario U
+    INNER JOIN tb_rol R ON U.ConsecutivoRol = R.Consecutivo
+    #WHERE	Identificacion = pIdentificacion
+	WHERE	(Identificacion = pIdentificacionCorreo OR CorreoElectronico = pIdentificacionCorreo)
+		AND Contrasenna = pContrasenna
+        AND Estado = 1;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spRegistrarCurso` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spRegistrarCurso`(
+	pNombre 				varchar(100), 
+    pCantidad				int, 
+    pFechaInicio			datetime, 
+    pFechaFin				datetime,
+    pConsecutivoUsuario 	int,
+    pImagen					varchar(100)
+)
+BEGIN
+
+	INSERT INTO tb_curso(Nombre,Cantidad,Inicio,Fin,Activo,Imagen,ConsecutivoUsuario)
+	VALUES (pNombre,pCantidad,pFechaInicio,pFechaFin,1,pImagen,pConsecutivoUsuario);
+    
+    SELECT LAST_INSERT_ID() 'ID';
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spRegistrarError` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spRegistrarError`(
+	pMensaje 			varchar(8000), 
+    pAccion				varchar(100), 
+    pConsecutivoUsuario	int(11)
+)
+BEGIN
+
+	INSERT INTO tb_error (Mensaje,FechaHora,Accion,ConsecutivoUsuario)
+	VALUES (pMensaje, NOW(), pAccion, pConsecutivoUsuario);
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -110,14 +537,49 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spRegistrarUsuario`(
-pIdentificacion varchar(15), 
-pNombre varchar(250), 
-pCorreoElectronico varchar(100), 
-pContrasenna varchar(10)
+	pIdentificacion 	varchar(15), 
+    pNombre				varchar(250), 
+    pCorreoElectronico	varchar(100), 
+    pContrasenna		varchar(10)
 )
 BEGIN
-INSERT INTO tb_usuario(Identificacion, Nombre, CorreoElectronico, Contrasenna, Estado)
-VALUES(pIdentificacion, pNombre, pCorreoElectronico, pContrasenna, 1);
+
+	INSERT INTO tb_usuario (Identificacion, Nombre, CorreoElectronico, Contrasenna, Estado, ConsecutivoRol)
+	VALUES (pIdentificacion, pNombre, pCorreoElectronico, pContrasenna, 1, 2);
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spValidarCorreo` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spValidarCorreo`(
+	pCorreoElectronico 	varchar(100)
+)
+BEGIN
+
+	SELECT 	U.Consecutivo,
+			Identificacion,
+			U.Nombre,
+			CorreoElectronico,
+			Estado,
+            ConsecutivoRol,
+            R.Nombre 'NombreRol'
+	FROM 	tb_usuario U
+    INNER JOIN tb_rol R ON U.ConsecutivoRol = R.Consecutivo
+    WHERE	CorreoElectronico = pCorreoElectronico
+        AND Estado = 1;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -134,4 +596,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-20  2:42:46
+-- Dump completed on 2026-08-05 20:59:27

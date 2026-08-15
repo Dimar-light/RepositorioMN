@@ -15,7 +15,7 @@
         <div class="card" style="max-width: 420px; width: 100%">
             <div class="card-body p-5">
                 <div class="text-center mb-3">
-                    <a href="index.html" class="mb-2 d-inline-block"><img src="../images/logo-fidelitas.png" alt=""
+                    <a href="IniciarSesion.php" class="mb-2 d-inline-block"><img src="../images/logo-fidelitas.png" alt=""
                             width="130" />
                     </a>
                     <h1 class="card-title mb-3 h5">Iniciar Sesión</h1>
@@ -32,7 +32,7 @@
                 <form action="" method="post" class="needs-validation mt-3" id="formIniciarSesion">
 
                     <div class="mb-3">
-                        <label for="identificacion" class="form-label">Identificación</label>
+                        <label for="identificacion" class="form-label">Correo electrónico o Identificación</label>
                         <input id="identificacion" name="identificacion" type="text" class="form-control" autofocus />
                     </div>
 
